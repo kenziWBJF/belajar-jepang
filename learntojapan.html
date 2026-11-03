@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Bahasa Jepang N5 - Pemula Banget</title>
+    <meta name="theme-color" content="#8b2e2e">
+    <meta name="description" content="Belajar bahasa Jepang N5 dengan kuis kana, kartu kosakata, dan progres belajar offline.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Belajar Jepang">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    <style>
+        /* gaya dasar, sengaja agak jadul biar ga kelihatan AI */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfaf3;
+            color: #2e2e2e;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #8b2e2e;
+            color: #fff8e7;
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 5px solid #d4a373;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+        header p {
+            margin: 8px 0 0;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        nav {
+            background-color: #d4a373;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-align: center;
+            border-bottom: 2px solid #8b2e2e;
+        }
+        nav a {
+            color: #3e2723;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        nav a:hover {
+            background-color: #fdfaf3;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        section {
+            background-color: #fff;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            border: 1px solid #e0d6c8;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        h2 {
+            color: #8b2e2e;
+            border-bottom: 2px dashed #d4a373;
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 1.6rem;
+        }
+        h3 {
+            color: #5d4037;
+            margin-top: 25px;
+            font-size: 1.2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            border: 1px solid #d4a373;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f5e6d3;
+            color: #3e2723;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #fefcf9;
+        }
+        .kana-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .kana-item {
+            background-color: #f5e6d3;
+            border: 1px solid #d4a373;
+            padding: 8px;
+            text-align: center;
+            border-radius: 4px;
+            font-size: 1.1rem;
+        }
+        .kana-item .romaji {
+            display: block;
+            font-size: 0.8rem;
+            color: #5d4037;
+            margin-top: 2px;
+        }
+        .accordion {
+            background-color: #f5e6d3;
+            color: #3e2723;
+            cursor: pointer;
+            padding: 12px 18px;
+            width: 100%;
+            border: 1px solid #d4a373;
+            text-align: left;
+            outline: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.2s;
+            margin-top: 8px;
+            border-radius: 5px;
+        }
+        .accordion:hover {
+            background-color: #e8d5bc;
+        }
+        .accordion.active {
+            background-color: #d4a373;
+            color: #fff;
+        }
+        .panel {
+            padding: 0 18px;
+            display: none;
+            background-color: white;
+            overflow: hidden;
+            border-left: 3px solid #d4a373;
+            margin-bottom: 5px;
+        }
+        .panel.show {
+            display: block;
+            padding: 10px 18px;
+        }
+        .example {
+            background-color: #fefcf9;
+            border-left: 4px solid #8b2e2e;
+            padding: 8px 12px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+        .example strong {
+            font-style: normal;
+            color: #8b2e2e;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #7a6a5a;
+            border-top: 2px solid #d4a373;
+            margin-top: 40px;
+        }
+        .audio-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #fff;
+            border: 2px solid #8b2e2e;
+            border-radius: 30px;
+            padding: 8px 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+        .audio-controls button {
+            background-color: #8b2e2e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .audio-controls button:hover {
+            background-color: #a13a3a;
+        }
+        .audio-controls span {
+            font-size: 0.8rem;
+            color: #5d4037;
+        }
+        .badge {
+            display: inline-block;
+            background-color: #8b2e2e;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .quiz-card {
+            background: linear-gradient(135deg, #fffaf2, #f8ead8);
+            border: 1px solid #d4a373;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .quiz-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .quiz-toolbar label {
+            font-weight: 600;
+        }
+        .quiz-toolbar select,
+        .quiz-button {
+            border: 1px solid #8b2e2e;
+            border-radius: 6px;
+            padding: 9px 12px;
+            font: inherit;
+        }
+        .quiz-toolbar select {
+            background: white;
+            color: #3e2723;
+        }
+        .quiz-stat {
+            background: white;
+            border: 1px solid #e0d6c8;
+            border-radius: 20px;
+            padding: 5px 12px;
+            color: #5d4037;
+        }
+        .quiz-progress {
+            height: 10px;
+            overflow: hidden;
+            background: #eadcc9;
+            border-radius: 10px;
+        }
+        .quiz-progress-fill {
+            width: 0;
+            height: 100%;
+            background: #8b2e2e;
+            border-radius: inherit;
+            transition: width 0.3s ease;
+        }
+        .quiz-counter {
+            color: #7a6a5a;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .quiz-question {
+            text-align: center;
+            padding: 10px 0 18px;
+        }
+        .quiz-kana {
+            color: #8b2e2e;
+            font-size: clamp(4rem, 12vw, 6rem);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .quiz-button {
+            background: #8b2e2e;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .quiz-button:hover:not(:disabled) {
+            background: #a13a3a;
+            transform: translateY(-1px);
+        }
+        .quiz-button:focus-visible,
+        .quiz-toolbar select:focus-visible {
+            outline: 3px solid #d4a373;
+            outline-offset: 2px;
+        }
+        .quiz-button:disabled {
+            cursor: default;
+            opacity: 0.75;
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+        .quiz-options .quiz-button {
+            background: white;
+            color: #3e2723;
+            border-color: #d4a373;
+        }
+        .quiz-options .quiz-button:hover:not(:disabled) {
+            background: #f5e6d3;
+        }
+        .quiz-options .quiz-button.is-correct {
+            background: #e4f3e5;
+            border-color: #43834b;
+            color: #24552a;
+        }
+        .quiz-options .quiz-button.is-wrong {
+            background: #f9e4e1;
+            border-color: #b94a48;
+            color: #8b2e2e;
+        }
+        .quiz-feedback {
+            min-height: 1.6em;
+            margin: 16px 0 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .quiz-feedback.is-correct {
+            color: #2f7137;
+        }
+        .quiz-feedback.is-wrong {
+            color: #8b2e2e;
+        }
+        .quiz-actions {
+            text-align: center;
+        }
+        .study-dashboard {
+            background: linear-gradient(135deg, #8b2e2e, #5d2525);
+            color: #fff8e7;
+            border: 0;
+        }
+        .study-dashboard h2 {
+            color: #fff8e7;
+            border-color: #d4a373;
+        }
+        .dashboard-top,
+        .dashboard-stats,
+        .daily-goal-row,
+        .flashcard-controls {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .dashboard-top {
+            justify-content: space-between;
+        }
+        .dashboard-top h2 {
+            margin-bottom: 4px;
+        }
+        .dashboard-top-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .install-app {
+            background: #e7bd72;
+            color: #3e2723;
+            border: 0;
+            border-radius: 20px;
+            padding: 9px 14px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+        .install-app:hover {
+            background: #f0cf91;
+        }
+        .install-hint {
+            flex-basis: 100%;
+            margin: 0;
+            color: #ffe2b0;
+            font-size: 0.9rem;
+        }
+        .dashboard-stats {
+            margin: 20px 0;
+        }
+        .dashboard-stat {
+            flex: 1 1 130px;
+            padding: 14px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+        }
+        .dashboard-stat strong {
+            display: block;
+            font-size: 1.7rem;
+        }
+        .daily-goal-row {
+            justify-content: space-between;
+        }
+        .dashboard-progress {
+            height: 12px;
+            margin: 10px 0;
+            overflow: hidden;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.25);
+        }
+        .dashboard-progress-fill {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: #e7bd72;
+            transition: width 0.3s ease;
+        }
+        .dashboard-reset {
+            border: 0;
+            padding: 7px 0;
+            background: transparent;
+            color: #ffe2b0;
+            text-decoration: underline;
+            cursor: pointer;
+            font: inherit;
+        }
+        .flashcard {
+            min-height: 210px;
+            display: grid;
+            place-items: center;
+            padding: 22px;
+            text-align: center;
+            border: 1px solid #d4a373;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #fffaf2, #f8ead8);
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .flashcard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(62,39,35,0.12);
+        }
+        .flashcard:focus-visible {
+            outline: 3px solid #8b2e2e;
+            outline-offset: 3px;
+        }
+        .flashcard-main {
+            display: block;
+            color: #8b2e2e;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        .flashcard-sub,
+        .flashcard-hint {
+            display: block;
+            color: #5d4037;
+            margin-top: 8px;
+        }
+        .flashcard-hint {
+            font-size: 0.9rem;
+        }
+        .flashcard-controls {
+            justify-content: center;
+            margin-top: 14px;
+        }
+        .flashcard-controls .quiz-button {
+            min-width: 130px;
+        }
+        .flashcard-controls .needs-review {
+            background: white;
+            color: #8b2e2e;
+        }
+        .flashcard-controls .needs-review:hover:not(:disabled) {
+            background: #f5e6d3;
+        }
+        .flashcard-controls .know-word {
+            background: #2f7137;
+            border-color: #2f7137;
+        }
+        .flashcard-counter {
+            text-align: center;
+            color: #7a6a5a;
+        }
+        .table-search {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 8px 0 14px;
+            padding: 10px 12px;
+            border: 1px solid #d4a373;
+            border-radius: 6px;
+            font: inherit;
+        }
+        .table-search:focus-visible {
+            outline: 3px solid #8b2e2e;
+            outline-offset: 2px;
+        }
+        .theme-toggle {
+            background: transparent;
+            color: inherit;
+            border: 1px solid currentColor;
+            border-radius: 20px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font: inherit;
+        }
+        body.dark-mode {
+            background: #191716;
+            color: #eee5da;
+        }
+        .dark-mode section {
+            background: #272321;
+            border-color: #51443b;
+        }
+        .dark-mode h2,
+        .dark-mode h3 {
+            color: #edbd87;
+        }
+        .dark-mode th {
+            background: #45382f;
+            color: #fff8e7;
+        }
+        .dark-mode td,
+        .dark-mode .panel,
+        .dark-mode .quiz-options .quiz-button,
+        .dark-mode .flashcard,
+        .dark-mode .quiz-toolbar select,
+        .dark-mode .table-search {
+            background: #302b28;
+            color: #eee5da;
+        }
+        .dark-mode tr:nth-child(even) {
+            background: #282421;
+        }
+        .dark-mode .kana-item,
+        .dark-mode .accordion {
+            background: #45382f;
+            color: #fff8e7;
+        }
+        .dark-mode .example {
+            background: #302b28;
+        }
+        .dark-mode footer {
+            color: #c4b5a5;
+        }
+        @media (max-width: 520px) {
+            .quiz-card {
+                padding: 14px;
+            }
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 0 12px;
+            }
+            section {
+                padding: 16px;
+            }
+            nav a {
+                display: inline-block;
+                margin: 3px;
+            }
+            .audio-controls {
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>日本語 N5 基礎</h1>
+        <p>Materi Bahasa Jepang Pemula — Hiragana, Katakana, Kanji, Kosakata & Tata Bahasa</p>
+    </header>
+
+    <nav>
+        <a href="#progres">Progres</a>
+        <a href="#kana">Kana</a>
+        <a href="#kuis">🎮 Kuis</a>
+        <a href="#kanji">Kanji</a>
+        <a href="#kosakata">Kosakata</a>
+        <a href="#kartu">🃏 Kartu</a>
+        <a href="#tata-bahasa">Tata Bahasa</a>
+        <a href="#tips">Tips</a>
+    </nav>
+
+    <div class="container">
+        <section id="progres" class="study-dashboard">
+            <div class="dashboard-top">
+                <div>
+                    <h2>こんにちは! Siap belajar?</h2>
+                    <p id="studyGreeting">Sedikit latihan hari ini bikin makin lancar.</p>
+                </div>
+                <div class="dashboard-top-actions">
+                    <button class="install-app" id="installApp" type="button">📲 Pasang aplikasi</button>
+                    <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">🌙 Mode gelap</button>
+                </div>
+                <p class="install-hint" id="installHint" role="status" aria-live="polite"></p>
+            </div>
+            <div class="dashboard-stats">
+                <div class="dashboard-stat">✨ Total XP<strong id="totalXp">0</strong></div>
+                <div class="dashboard-stat">🔥 Hari beruntun<strong id="dayStreak">0</strong></div>
+                <div class="dashboard-stat">📚 Kata dikuasai<strong id="knownWords">0</strong></div>
+            </div>
+            <div class="daily-goal-row">
+                <strong>🎯 Target hari ini: 10 latihan</strong>
+                <span id="dailyGoalText">0 / 10 selesai</span>
+            </div>
+            <div
+                class="dashboard-progress"
+                role="progressbar"
+                aria-label="Target latihan hari ini"
+                aria-valuemin="0"
+                aria-valuemax="10"
+                aria-valuenow="0"
+            >
+                <div class="dashboard-progress-fill" id="dailyGoalProgress"></div>
+            </div>
+            <button class="dashboard-reset" id="resetProgress" type="button">Atur ulang progres belajar</button>
+        </section>
+
+        <!-- SECTION 1: KANA -->
+        <section id="kana">
+            <h2>1. Huruf Kana (Hiragana & Katakana)</h2>
+            <p>Ini fondasi banget. Semua kata Jepang ditulis pakai kana, jadi wajib hafal di luar kepala. Hiragana buat kata asli Jepang, Katakana buat kata serapan (gairaigo).</p>
+
+            <h3>Hiragana Dasar (46 Huruf)</h3>
+            <div class="kana-grid">
+                <div class="kana-item">あ<span class="romaji">a</span></div>
+                <div class="kana-item">い<span class="romaji">i</span></div>
+                <div class="kana-item">う<span class="romaji">u</span></div>
+                <div class="kana-item">え<span class="romaji">e</span></div>
+                <div class="kana-item">お<span class="romaji">o</span></div>
+                <div class="kana-item">か<span class="romaji">ka</span></div>
+                <div class="kana-item">き<span class="romaji">ki</span></div>
+                <div class="kana-item">く<span class="romaji">ku</span></div>
+                <div class="kana-item">け<span class="romaji">ke</span></div>
+                <div class="kana-item">こ<span class="romaji">ko</span></div>
+                <div class="kana-item">さ<span class="romaji">sa</span></div>
+                <div class="kana-item">し<span class="romaji">shi</span></div>
+                <div class="kana-item">す<span class="romaji">su</span></div>
+                <div class="kana-item">せ<span class="romaji">se</span></div>
+                <div class="kana-item">そ<span class="romaji">so</span></div>
+                <div class="kana-item">た<span class="romaji">ta</span></div>
+                <div class="kana-item">ち<span class="romaji">chi</span></div>
+                <div class="kana-item">つ<span class="romaji">tsu</span></div>
+                <div class="kana-item">て<span class="romaji">te</span></div>
+                <div class="kana-item">と<span class="romaji">to</span></div>
+                <div class="kana-item">な<span class="romaji">na</span></div>
+                <div class="kana-item">に<span class="romaji">ni</span></div>
+                <div class="kana-item">ぬ<span class="romaji">nu</span></div>
+                <div class="kana-item">ね<span class="romaji">ne</span></div>
+                <div class="kana-item">の<span class="romaji">no</span></div>
+                <div class="kana-item">は<span class="romaji">ha</span></div>
+                <div class="kana-item">ひ<span class="romaji">hi</span></div>
+                <div class="kana-item">ふ<span class="romaji">fu</span></div>
+                <div class="kana-item">へ<span class="romaji">he</span></div>
+                <div class="kana-item">ほ<span class="romaji">ho</span></div>
+                <div class="kana-item">ま<span class="romaji">ma</span></div>
+                <div class="kana-item">み<span class="romaji">mi</span></div>
+                <div class="kana-item">む<span class="romaji">mu</span></div>
+                <div class="kana-item">め<span class="romaji">me</span></div>
+                <div class="kana-item">も<span class="romaji">mo</span></div>
+                <div class="kana-item">や<span class="romaji">ya</span></div>
+                <div class="kana-item">ゆ<span class="romaji">yu</span></div>
+                <div class="kana-item">よ<span class="romaji">yo</span></div>
+                <div class="kana-item">ら<span class="romaji">ra</span></div>
+                <div class="kana-item">り<span class="romaji">ri</span></div>
+                <div class="kana-item">る<span class="romaji">ru</span></div>
+                <div class="kana-item">れ<span class="romaji">re</span></div>
+                <div class="kana-item">ろ<span class="romaji">ro</span></div>
+                <div class="kana-item">わ<span class="romaji">wa</span></div>
+                <div class="kana-item">を<span class="romaji">o (wo)</span></div>
+                <div class="kana-item">ん<span class="romaji">n</span></div>
+            </div>
+
+            <h3>Katakana Dasar (46 Huruf)</h3>
+            <div class="kana-grid">
+                <div class="kana-item">ア<span class="romaji">a</span></div>
+                <div class="kana-item">イ<span class="romaji">i</span></div>
+                <div class="kana-item">ウ<span class="romaji">u</span></div>
+                <div class="kana-item">エ<span class="romaji">e</span></div>
+                <div class="kana-item">オ<span class="romaji">o</span></div>
+                <div class="kana-item">カ<span class="romaji">ka</span></div>
+                <div class="kana-item">キ<span class="romaji">ki</span></div>
+                <div class="kana-item">ク<span class="romaji">ku</span></div>
+                <div class="kana-item">ケ<span class="romaji">ke</span></div>
+                <div class="kana-item">コ<span class="romaji">ko</span></div>
+                <div class="kana-item">サ<span class="romaji">sa</span></div>
+                <div class="kana-item">シ<span class="romaji">shi</span></div>
+                <div class="kana-item">ス<span class="romaji">su</span></div>
+                <div class="kana-item">セ<span class="romaji">se</span></div>
+                <div class="kana-item">ソ<span class="romaji">so</span></div>
+                <div class="kana-item">タ<span class="romaji">ta</span></div>
+                <div class="kana-item">チ<span class="romaji">chi</span></div>
+                <div class="kana-item">ツ<span class="romaji">tsu</span></div>
+                <div class="kana-item">テ<span class="romaji">te</span></div>
+                <div class="kana-item">ト<span class="romaji">to</span></div>
+                <div class="kana-item">ナ<span class="romaji">na</span></div>
+                <div class="kana-item">ニ<span class="romaji">ni</span></div>
+                <div class="kana-item">ヌ<span class="romaji">nu</span></div>
+                <div class="kana-item">ネ<span class="romaji">ne</span></div>
+                <div class="kana-item">ノ<span class="romaji">no</span></div>
+                <div class="kana-item">ハ<span class="romaji">ha</span></div>
+                <div class="kana-item">ヒ<span class="romaji">hi</span></div>
+                <div class="kana-item">フ<span class="romaji">fu</span></div>
+                <div class="kana-item">ヘ<span class="romaji">he</span></div>
+                <div class="kana-item">ホ<span class="romaji">ho</span></div>
+                <div class="kana-item">マ<span class="romaji">ma</span></div>
+                <div class="kana-item">ミ<span class="romaji">mi</span></div>
+                <div class="kana-item">ム<span class="romaji">mu</span></div>
+                <div class="kana-item">メ<span class="romaji">me</span></div>
+                <div class="kana-item">モ<span class="romaji">mo</span></div>
+                <div class="kana-item">ヤ<span class="romaji">ya</span></div>
+                <div class="kana-item">ユ<span class="romaji">yu</span></div>
+                <div class="kana-item">ヨ<span class="romaji">yo</span></div>
+                <div class="kana-item">ラ<span class="romaji">ra</span></div>
+                <div class="kana-item">リ<span class="romaji">ri</span></div>
+                <div class="kana-item">ル<span class="romaji">ru</span></div>
+                <div class="kana-item">レ<span class="romaji">re</span></div>
+                <div class="kana-item">ロ<span class="romaji">ro</span></div>
+                <div class="kana-item">ワ<span class="romaji">wa</span></div>
+                <div class="kana-item">ヲ<span class="romaji">o (wo)</span></div>
+                <div class="kana-item">ン<span class="romaji">n</span></div>
+            </div>
+
+            <p><strong>Catatan:</strong> Huruf を (wo) dibaca "o" kalau jadi partikel objek. Huruf ん (n) adalah satu-satunya konsonan murni.</p>
+
+            <h3>Dakuten & Handakuten (Variasi Bunyi)</h3>
+            <table>
+                <tr><th>Dasar</th><th>Dakuten (゛)</th><th>Handakuten (゜)</th></tr>
+                <tr><td>か (ka)</td><td>が (ga)</td><td>—</td></tr>
+                <tr><td>さ (sa)</td><td>ざ (za)</td><td>—</td></tr>
+                <tr><td>た (ta)</td><td>だ (da)</td><td>—</td></tr>
+                <tr><td>は (ha)</td><td>ば (ba)</td><td>ぱ (pa)</td></tr>
+            </table>
+            <p>Contoh: かぎ (kagi) = kunci, えんぴつ (enpitsu) = pensil.</p>
+        </section>
+
+        <section id="kuis">
+            <h2>🎮 Misi Kana <span class="badge">10 Soal</span></h2>
+            <p>Tebak cara baca kana, kumpulkan XP, dan coba pecahkan rekor streak-mu. Setiap ronde berisi 10 soal.</p>
+            <div class="quiz-card">
+                <div class="quiz-toolbar">
+                    <label for="kanaMode">Pilih misi:</label>
+                    <select id="kanaMode">
+                        <option value="0">Hiragana</option>
+                        <option value="1">Katakana</option>
+                    </select>
+                    <span class="quiz-stat">⭐ <strong id="quizScore">0</strong> XP</span>
+                    <span class="quiz-stat">🔥 <strong id="quizStreak">0</strong> streak</span>
+                </div>
+                <div
+                    class="quiz-progress"
+                    role="progressbar"
+                    aria-label="Progres ronde"
+                    aria-valuemin="0"
+                    aria-valuemax="10"
+                    aria-valuenow="0"
+                >
+                    <div class="quiz-progress-fill" id="quizProgress"></div>
+                </div>
+                <p class="quiz-counter" id="quizCounter">Soal 1 dari 10</p>
+                <div class="quiz-question">
+                    <div class="quiz-kana" id="quizKana" aria-live="polite"></div>
+                    <p>Huruf ini dibaca bagaimana?</p>
+                    <button class="quiz-button" id="speakKana" type="button">🔊 Dengar bunyi</button>
+                </div>
+                <div class="quiz-options" id="quizOptions"></div>
+                <p class="quiz-feedback" id="quizFeedback" role="status" aria-live="polite"></p>
+                <div class="quiz-actions">
+                    <button class="quiz-button" id="quizNext" type="button" hidden>Lanjut →</button>
+                    <button class="quiz-button" id="quizRestart" type="button" hidden>Main lagi 🎉</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: KANJI -->
+        <section id="kanji">
+            <h2>2. Kanji N5 <span class="badge">±100 Huruf</span></h2>
+            <p>JLPT N5 cuma minta sekitar 100 kanji dasar. Ini list yang paling sering keluar. Hafalin cara baca on'yomi (音読み) dan kun'yomi (訓読み) nya.</p>
+
+            <table>
+                <tr><th>Kanji</th><th>Arti</th><th>On'yomi</th><th>Kun'yomi</th></tr>
+                <tr><td>日</td><td>hari, matahari</td><td>ニチ, ジツ</td><td>ひ, -び</td></tr>
+                <tr><td>一</td><td>satu</td><td>イチ, イツ</td><td>ひと-</td></tr>
+                <tr><td>国</td><td>negara</td><td>コク</td><td>くに</td></tr>
+                <tr><td>人</td><td>orang</td><td>ジン, ニン</td><td>ひと</td></tr>
+                <tr><td>年</td><td>tahun</td><td>ネン</td><td>とし</td></tr>
+                <tr><td>大</td><td>besar</td><td>ダイ, タイ</td><td>おお-</td></tr>
+                <tr><td>十</td><td>sepuluh</td><td>ジュウ</td><td>とお</td></tr>
+                <tr><td>二</td><td>dua</td><td>ニ</td><td>ふた-</td></tr>
+                <tr><td>本</td><td>buku, asal</td><td>ホン</td><td>もと</td></tr>
+                <tr><td>中</td><td>tengah</td><td>チュウ</td><td>なか</td></tr>
+                <tr><td>長</td><td>panjang, kepala</td><td>チョウ</td><td>なが-</td></tr>
+                <tr><td>出</td><td>keluar</td><td>シュツ</td><td>で-る, だ-す</td></tr>
+                <tr><td>三</td><td>tiga</td><td>サン</td><td>みっ-つ</td></tr>
+                <tr><td>時</td><td>waktu, jam</td><td>ジ</td><td>とき</td></tr>
+                <tr><td>行</td><td>pergi</td><td>コウ, ギョウ</td><td>い-く, ゆ-く</td></tr>
+                <tr><td>見</td><td>melihat</td><td>ケン</td><td>み-る</td></tr>
+                <tr><td>月</td><td>bulan</td><td>ゲツ, ガツ</td><td>つき</td></tr>
+                <tr><td>後</td><td>setelah, belakang</td><td>ゴ, コウ</td><td>あと, うし-ろ</td></tr>
+                <tr><td>前</td><td>depan, sebelum</td><td>ゼン</td><td>まえ</td></tr>
+                <tr><td>生</td><td>hidup, lahir</td><td>セイ, ショウ</td><td>い-きる, う-まれる</td></tr>
+                <tr><td>五</td><td>lima</td><td>ゴ</td><td>いつ-つ</td></tr>
+                <tr><td>間</td><td>antara, ruang</td><td>カン, ケン</td><td>あいだ, ま</td></tr>
+                <tr><td>上</td><td>atas</td><td>ジョウ</td><td>うえ, あ-げる</td></tr>
+                <tr><td>東</td><td>timur</td><td>トウ</td><td>ひがし</td></tr>
+                <tr><td>四</td><td>empat</td><td>シ</td><td>よん, よっ-つ</td></tr>
+                <tr><td>今</td><td>sekarang</td><td>コン, キン</td><td>いま</td></tr>
+                <tr><td>金</td><td>emas, uang</td><td>キン</td><td>かね</td></tr>
+                <tr><td>九</td><td>sembilan</td><td>キュウ, ク</td><td>ここの-つ</td></tr>
+                <tr><td>入</td><td>masuk</td><td>ニュウ</td><td>はい-る, い-れる</td></tr>
+                <tr><td>学</td><td>belajar</td><td>ガク</td><td>まな-ぶ</td></tr>
+                <tr><td>高</td><td>tinggi, mahal</td><td>コウ</td><td>たか-い</td></tr>
+                <tr><td>円</td><td>lingkaran, yen</td><td>エン</td><td>まる-い</td></tr>
+                <tr><td>子</td><td>anak</td><td>シ</td><td>こ</td></tr>
+                <tr><td>外</td><td>luar</td><td>ガイ, ゲ</td><td>そと, ほか</td></tr>
+                <tr><td>八</td><td>delapan</td><td>ハチ</td><td>やっ-つ</td></tr>
+                <tr><td>六</td><td>enam</td><td>ロク</td><td>むっ-つ</td></tr>
+                <tr><td>下</td><td>bawah</td><td>カ, ゲ</td><td>した, さ-げる</td></tr>
+                <tr><td>来</td><td>datang</td><td>ライ</td><td>く-る</td></tr>
+                <tr><td>気</td><td>semangat, udara</td><td>キ, ケ</td><td>—</td></tr>
+                <tr><td>小</td><td>kecil</td><td>ショウ</td><td>ちい-さい</td></tr>
+                <tr><td>七</td><td>tujuh</td><td>シチ</td><td>なな-つ</td></tr>
+                <tr><td>山</td><td>gunung</td><td>サン</td><td>やま</td></tr>
+                <tr><td>話</td><td>berbicara</td><td>ワ</td><td>はな-す</td></tr>
+                <tr><td>女</td><td>perempuan</td><td>ジョ</td><td>おんな</td></tr>
+                <tr><td>北</td><td>utara</td><td>ホク</td><td>きた</td></tr>
+                <tr><td>午</td><td>siang</td><td>ゴ</td><td>—</td></tr>
+                <tr><td>百</td><td>seratus</td><td>ヒャク</td><td>—</td></tr>
+                <tr><td>書</td><td>menulis</td><td>ショ</td><td>か-く</td></tr>
+                <tr><td>先</td><td>dahulu, ujung</td><td>セン</td><td>さき</td></tr>
+                <tr><td>名</td><td>nama</td><td>メイ, ミョウ</td><td>な</td></tr>
+                <tr><td>川</td><td>sungai</td><td>セン</td><td>かわ</td></tr>
+                <tr><td>千</td><td>seribu</td><td>セン</td><td>ち</td></tr>
+                <tr><td>水</td><td>air</td><td>スイ</td><td>みず</td></tr>
+                <tr><td>半</td><td>setengah</td><td>ハン</td><td>なか-ば</td></tr>
+                <tr><td>男</td><td>laki-laki</td><td>ダン, ナン</td><td>おとこ</td></tr>
+                <tr><td>西</td><td>barat</td><td>セイ, サイ</td><td>にし</td></tr>
+                <tr><td>電</td><td>listrik</td><td>デン</td><td>—</td></tr>
+                <tr><td>校</td><td>sekolah</td><td>コウ</td><td>—</td></tr>
+                <tr><td>語</td><td>bahasa</td><td>ゴ</td><td>かた-る</td></tr>
+                <tr><td>土</td><td>tanah</td><td>ド, ト</td><td>つち</td></tr>
+                <tr><td>木</td><td>pohon, kayu</td><td>モク, ボク</td><td>き</td></tr>
+                <tr><td>聞</td><td>mendengar</td><td>ブン, モン</td><td>き-く</td></tr>
+                <tr><td>食</td><td>makan</td><td>ショク</td><td>た-べる</td></tr>
+                <tr><td>車</td><td>mobil, kendaraan</td><td>シャ</td><td>くるま</td></tr>
+                <tr><td>何</td><td>apa</td><td>カ</td><td>なに, なん</td></tr>
+                <tr><td>南</td><td>selatan</td><td>ナン</td><td>みなみ</td></tr>
+                <tr><td>万</td><td>sepuluh ribu</td><td>マン, バン</td><td>—</td></tr>
+                <tr><td>毎</td><td>setiap</td><td>マイ</td><td>—</td></tr>
+                <tr><td>白</td><td>putih</td><td>ハク, ビャク</td><td>しろ, しら</td></tr>
+                <tr><td>天</td><td>langit</td><td>テン</td><td>あま, あめ</td></tr>
+                <tr><td>母</td><td>ibu</td><td>ボ</td><td>はは</td></tr>
+                <tr><td>火</td><td>api</td><td>カ</td><td>ひ</td></tr>
+                <tr><td>父</td><td>ayah</td><td>フ</td><td>ちち</td></tr>
+                <tr><td>右</td><td>kanan</td><td>ウ, ユウ</td><td>みぎ</td></tr>
+                <tr><td>読</td><td>membaca</td><td>ドク, トク</td><td>よ-む</td></tr>
+                <tr><td>友</td><td>teman</td><td>ユウ</td><td>とも</td></tr>
+                <tr><td>左</td><td>kiri</td><td>サ</td><td>ひだり</td></tr>
+                <tr><td>休</td><td>istirahat</td><td>キュウ</td><td>やす-む</td></tr>
+                <tr><td>雨</td><td>hujan</td><td>ウ</td><td>あめ</td></tr>
+                <tr><td>飲</td><td>minum</td><td>イン</td><td>の-む</td></tr>
+                <tr><td>会</td><td>bertemu</td><td>カイ, エ</td><td>あ-う</td></tr>
+                <tr><td>買</td><td>membeli</td><td>バイ</td><td>か-う</td></tr>
+                <tr><td>口</td><td>mulut</td><td>コウ, ク</td><td>くち</td></tr>
+                <tr><td>目</td><td>mata</td><td>モク, ボク</td><td>め</td></tr>
+                <tr><td>耳</td><td>telinga</td><td>ジ</td><td>みみ</td></tr>
+                <tr><td>手</td><td>tangan</td><td>シュ</td><td>て</td></tr>
+                <tr><td>足</td><td>kaki</td><td>ソク</td><td>あし</td></tr>
+            </table>
+            <p><em>Tips: jangan hafal satu-satu, tapi hafal dalam kata. Contoh: 日本 (nihon) = Jepang, 一日 (ichinichi) = satu hari.</em></p>
+        </section>
+
+        <!-- SECTION 3: KOSAKATA -->
+        <section id="kosakata">
+            <h2>3. Kosakata N5 <span class="badge">±800 Kata</span></h2>
+            <p>N5 butuh sekitar 800 kosakata. Di bawah ini kosakata yang paling sering muncul, dikelompokkan biar gampang dihafal.</p>
+            <label for="vocabSearch"><strong>🔎 Cari kosakata:</strong></label>
+            <input class="table-search" id="vocabSearch" type="search" placeholder="Ketik kanji, kana, atau arti..." autocomplete="off">
+            <p id="vocabSearchStatus" role="status" aria-live="polite"></p>
+
+            <button class="accordion">🔢 Angka & Waktu</button>
+            <div class="panel">
+                <table>
+                    <tr><th>Kanji</th><th>Kana</th><th>Arti</th></tr>
+                    <tr><td>一</td><td>いち</td><td>satu</td></tr>
+                    <tr><td>二</td><td>に</td><td>dua</td></tr>
+                    <tr><td>三</td><td>さん</td><td>tiga</td></tr>
+                    <tr><td>四</td><td>よん / し</td><td>empat</td></tr>
+                    <tr><td>五</td><td>ご</td><td>lima</td></tr>
+                    <tr><td>六</td><td>ろく</td><td>enam</td></tr>
+                    <tr><td>七</td><td>なな / しち</td><td>tujuh</td></tr>
+                    <tr><td>八</td><td>はち</td><td>delapan</td></tr>
+                    <tr><td>九</td><td>きゅう / く</td><td>sembilan</td></tr>
+                    <tr><td>十</td><td>じゅう</td><td>sepuluh</td></tr>
+                    <tr><td>百</td><td>ひゃく</td><td>seratus</td></tr>
+                    <tr><td>千</td><td>せん</td><td>seribu</td></tr>
+                    <tr><td>万</td><td>まん</td><td>sepuluh ribu</td></tr>
+                    <tr><td>今</td><td>いま</td><td>sekarang</td></tr>
+                    <tr><td>朝</td><td>あさ</td><td>pagi</td></tr>
+                    <tr><td>昼</td><td>ひる</td><td>siang</td></tr>
+                    <tr><td>夜</td><td>よる</td><td>malam</td></tr>
+                    <tr><td>今日</td><td>きょう</td><td>hari ini</td></tr>
+                    <tr><td>明日</td><td>あした</td><td>besok</td></tr>
+                    <tr><td>昨日</td><td>きのう</td><td>kemarin</td></tr>
+                </table>
+            </div>
+
+            <button class="accordion">👨‍👩‍👧‍👦 Keluarga & Orang</button>
+            <div class="panel">
+                <table>
+                    <tr><th>Kanji</th><th>Kana</th><th>Arti</th></tr>
+                    <tr><td>私</td><td>わたし</td><td>saya</td></tr>
+                    <tr><td>あなた</td><td>あなた</td><td>kamu</td></tr>
+                    <tr><td>人</td><td>ひと</td><td>orang</td></tr>
+                    <tr><td>男</td><td>おとこ</td><td>laki-laki</td></tr>
+                    <tr><td>女</td><td>おんな</td><td>perempuan</td></tr>
+                    <tr><td>父</td><td>ちち</td><td>ayah (sendiri)</td></tr>
+                    <tr><td>母</td><td>はは</td><td>ibu (sendiri)</td></tr>
+                    <tr><td>兄</td><td>あに</td><td>kakak laki-laki</td></tr>
+                    <tr><td>姉</td><td>あね</td><td>kakak perempuan</td></tr>
+                    <tr><td>弟</td><td>おとうと</td><td>adik laki-laki</td></tr>
+                    <tr><td>妹</td><td>いもうと</td><td>adik perempuan</td></tr>
+                    <tr><td>友達</td><td>ともだち</td><td>teman</td></tr>
+                    <tr><td>先生</td><td>せんせい</td><td>guru</td></tr>
+                    <tr><td>学生</td><td>がくせい</td><td>murid/mahasiswa</td></tr>
+                </table>
+            </div>
+
+            <button class="accordion">🍚 Makanan & Minuman</button>
+            <div class="panel">
+                <table>
+                    <tr><th>Kanji</th><th>Kana</th><th>Arti</th></tr>
+                    <tr><td>水</td><td>みず</td><td>air</td></tr>
+                    <tr><td>お茶</td><td>おちゃ</td><td>teh hijau</td></tr>
+                    <tr><td>ご飯</td><td>ごはん</td><td>nasi</td></tr>
+                    <tr><td>肉</td><td>にく</td><td>daging</td></tr>
+                    <tr><td>魚</td><td>さかな</td><td>ikan</td></tr>
+                    <tr><td>野菜</td><td>やさい</td><td>sayur</td></tr>
+                    <tr><td>果物</td><td>くだもの</td><td>buah</td></tr>
+                    <tr><td>卵</td><td>たまご</td><td>telur</td></tr>
+                    <tr><td>牛乳</td><td>ぎゅうにゅう</td><td>susu</td></tr>
+                    <tr><td>パン</td><td>ぱん</td><td>roti</td></tr>
+                    <tr><td>食べる</td><td>たべる</td><td>makan</td></tr>
+                    <tr><td>飲む</td><td>のむ</td><td>minum</td></tr>
+                </table>
+            </div>
+
+            <button class="accordion">🏠 Tempat & Benda</button>
+            <div class="panel">
+                <table>
+                    <tr><th>Kanji</th><th>Kana</th><th>Arti</th></tr>
+                    <tr><td>家</td><td>いえ</td><td>rumah</td></tr>
+                    <tr><td>学校</td><td>がっこう</td><td>sekolah</td></tr>
+                    <tr><td>駅</td><td>えき</td><td>stasiun</td></tr>
+                    <tr><td>病院</td><td>びょういん</td><td>rumah sakit</td></tr>
+                    <tr><td>銀行</td><td>ぎんこう</td><td>bank</td></tr>
+                    <tr><td>本屋</td><td>ほんや</td><td>toko buku</td></tr>
+                    <tr><td>車</td><td>くるま</td><td>mobil</td></tr>
+                    <tr><td>自転車</td><td>じてんしゃ</td><td>sepeda</td></tr>
+                    <tr><td>机</td><td>つくえ</td><td>meja</td></tr>
+                    <tr><td>椅子</td><td>いす</td><td>kursi</td></tr>
+                    <tr><td>本</td><td>ほん</td><td>buku</td></tr>
+                    <tr><td>時計</td><td>とけい</td><td>jam</td></tr>
+                </table>
+            </div>
+
+            <button class="accordion">🏃 Kata Kerja Dasar</button>
+            <div class="panel">
+                <table>
+                    <tr><th>Kanji</th><th>Kana</th><th>Arti</th></tr>
+                    <tr><td>行く</td><td>いく</td><td>pergi</td></tr>
+                    <tr><td>来る</td><td>くる</td><td>datang</td></tr>
+                    <tr><td>帰る</td><td>かえる</td><td>pulang</td></tr>
+                    <tr><td>見る</td><td>みる</td><td>melihat</td></tr>
+                    <tr><td>聞く</td><td>きく</td><td>mendengar</td></tr>
+                    <tr><td>話す</td><td>はなす</td><td>berbicara</td></tr>
+                    <tr><td>読む</td><td>よむ</td><td>membaca</td></tr>
+                    <tr><td>書く</td><td>かく</td><td>menulis</td></tr>
+                    <tr><td>買う</td><td>かう</td><td>membeli</td></tr>
+                    <tr><td>会う</td><td>あう</td><td>bertemu</td></tr>
+                    <tr><td>寝る</td><td>ねる</td><td>tidur</td></tr>
+                    <tr><td>起きる</td><td>おきる</td><td>bangun</td></tr>
+                </table>
+            </div>
+
+            <button class="accordion">📝 Kata Sifat (I & Na)</button>
+            <div class="panel">
+                <table>
+                    <tr><th>Kanji</th><th>Kana</th><th>Arti</th><th>Jenis</th></tr>
+                    <tr><td>大きい</td><td>おおきい</td><td>besar</td><td>I</td></tr>
+                    <tr><td>小さい</td><td>ちいさい</td><td>kecil</td><td>I</td></tr>
+                    <tr><td>高い</td><td>たかい</td><td>tinggi/mahal</td><td>I</td></tr>
+                    <tr><td>安い</td><td>やすい</td><td>murah</td><td>I</td></tr>
+                    <tr><td>新しい</td><td>あたらしい</td><td>baru</td><td>I</td></tr>
+                    <tr><td>古い</td><td>ふるい</td><td>lama</td><td>I</td></tr>
+                    <tr><td>暑い</td><td>あつい</td><td>panas (cuaca)</td><td>I</td></tr>
+                    <tr><td>寒い</td><td>さむい</td><td>dingin</td><td>I</td></tr>
+                    <tr><td>静か</td><td>しずか</td><td>tenang</td><td>Na</td></tr>
+                    <tr><td>賑やか</td><td>にぎやか</td><td>ramai</td><td>Na</td></tr>
+                    <tr><td>有名</td><td>ゆうめい</td><td>terkenal</td><td>Na</td></tr>
+                    <tr><td>好き</td><td>すき</td><td>suka</td><td>Na</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <section id="kartu">
+            <h2>🃏 Kartu Kosakata</h2>
+            <p>Latihan mengingat aktif: lihat kata Jepang, pikirkan artinya, lalu klik kartu untuk mengecek jawaban. Tandai kata yang sudah kamu kuasai.</p>
+            <div class="quiz-card">
+                <p class="flashcard-counter" id="flashcardCounter" aria-live="polite"></p>
+                <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="Kartu kosakata, klik untuk melihat arti">
+                    <div>
+                        <span class="flashcard-main" id="flashcardMain"></span>
+                        <span class="flashcard-sub" id="flashcardSub"></span>
+                        <span class="flashcard-hint" id="flashcardHint">Klik kartu untuk melihat arti</span>
+                    </div>
+                </div>
+                <div class="flashcard-controls">
+                    <button class="quiz-button needs-review" id="reviewWord" type="button">🔁 Ulangi lagi</button>
+                    <button class="quiz-button" id="revealWord" type="button">Lihat arti</button>
+                    <button class="quiz-button know-word" id="knowWord" type="button">✅ Sudah hafal</button>
+                    <button class="quiz-button" id="restartCards" type="button" hidden>Mulai lagi</button>
+                </div>
+                <p class="flashcard-counter" id="flashcardFeedback" role="status" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <!-- SECTION 4: TATA BAHASA -->
+        <section id="tata-bahasa">
+            <h2>4. Tata Bahasa N5 <span class="badge">±30 Pola</span></h2>
+            <p>Ini yang bikin bahasa Jepang beda: urutannya Subject-Object-Verb (SOV). Predikat selalu di akhir.</p>
+
+            <button class="accordion">🔹 Partikel Dasar (は, が, を, に, で, へ, と, も, の, か)</button>
+            <div class="panel">
+                <table>
+                    <tr><th>Partikel</th><th>Fungsi</th><th>Contoh</th></tr>
+                    <tr><td>は (wa)</td><td>penanda topik</td><td>わたしは がくせい です。<br>(Saya adalah siswa.)</td></tr>
+                    <tr><td>が (ga)</td><td>penanda subjek</td><td>ねこが います。<br>(Ada kucing.)</td></tr>
+                    <tr><td>を (o)</td><td>penanda objek</td><td>りんごを たべます。<br>(Makan apel.)</td></tr>
+                    <tr><td>に (ni)</td><td>waktu/tujuan/tempat ada</td><td>7じに おきます。<br>(Bangun jam 7.)</td></tr>
+                    <tr><td>で (de)</td><td>tempat aksi / alat</td><td>としょかんで べんきょうします。<br>(Belajar di perpustakaan.)</td></tr>
+                    <tr><td>へ (e)</td><td>arah gerak</td><td>にほんへ いきます。<br>(Pergi ke Jepang.)</td></tr>
+                    <tr><td>と (to)</td><td>dan / dengan</td><td>ともだちと はなします。<br>(Bicara dengan teman.)</td></tr>
+                    <tr><td>も (mo)</td><td>juga</td><td>わたしも いきます。<br>(Saya juga pergi.)</td></tr>
+                    <tr><td>の (no)</td><td>kepemilikan / penghubung</td><td>わたしの ほん。<br>(Buku saya.)</td></tr>
+                    <tr><td>か (ka)</td><td>penanda tanya</td><td>おちゃを のみますか。<br>(Mau minum teh?)</td></tr>
+                </table>
+            </div>
+
+            <button class="accordion">🔹 Pola Kalimat Dasar (です / じゃありません)</button>
+            <div class="panel">
+                <div class="example">
+                    <strong>Pola:</strong> [Topik] は [Predikat] です。<br>
+                    <strong>Contoh:</strong> これは ほん です。 (Ini adalah buku.)<br>
+                    <strong>Negatif:</strong> これは ほん じゃありません。 (Ini bukan buku.)<br>
+                    <strong>Tanya:</strong> これは ほん ですか。 (Apakah ini buku?)
+                </div>
+            </div>
+
+            <button class="accordion">🔹 Kata Kerja Bentuk ます (Sopan)</button>
+            <div class="panel">
+                <table>
+                    <tr><th>Bentuk</th><th>Arti</th><th>Contoh (飲む = minum)</th></tr>
+                    <tr><td>～ます</td><td>sekarang / akan</td><td>のみます (minum)</td></tr>
+                    <tr><td>～ません</td><td>negatif</td><td>のみません (tidak minum)</td></tr>
+                    <tr><td>～ました</td><td>lampau</td><td>のみました (sudah minum)</td></tr>
+                    <tr><td>～ませんでした</td><td>lampau negatif</td><td>のみませんでした (tidak minum tadi)</td></tr>
+                    <tr><td>～ましょう</td><td>ajakan</td><td>のみましょう (mari minum)</td></tr>
+                    <tr><td>～ませんか</td><td>mengajak bertanya</td><td>のみませんか (mau minum?)</td></tr>
+                    <tr><td>～たいです</td><td>ingin</td><td>のみたいです (ingin minum)</td></tr>
+                </table>
+            </div>
+
+            <button class="accordion">🔹 Kata Sifat I dan Na</button>
+            <div class="panel">
+                <p><strong>Kata Sifat I</strong> (akhiran い): 高い (たかい) = tinggi.</p>
+                <ul>
+                    <li>Present: 高いです (tinggi)</li>
+                    <li>Negatif: 高くないです / 高くありません (tidak tinggi)</li>
+                    <li>Lampau: 高かったです (dulu tinggi)</li>
+                    <li>Lampau negatif: 高くなかったです (dulu tidak tinggi)</li>
+                </ul>
+                <p><strong>Kata Sifat Na</strong> (tanpa い): 静か (しずか) = tenang.</p>
+                <ul>
+                    <li>Present: 静かです (tenang)</li>
+                    <li>Negatif: 静かじゃありません (tidak tenang)</li>
+                    <li>Lampau: 静かでした (dulu tenang)</li>
+                    <li>Lampau negatif: 静かじゃありませんでした (dulu tidak tenang)</li>
+                </ul>
+            </div>
+
+            <button class="accordion">🔹 Pola あります / います (Ada)</button>
+            <div class="panel">
+                <div class="example">
+                    <strong>あります</strong> untuk benda mati / tumbuhan.<br>
+                    つくえの うえに ほんが あります。 (Di atas meja ada buku.)<br><br>
+                    <strong>います</strong> untuk makhluk hidup (manusia/hewan).<br>
+                    へやに ねこが います。 (Di kamar ada kucing.)
+                </div>
+            </div>
+
+            <button class="accordion">🔹 Kata Tunjuk (これ, それ, あれ, どれ)</button>
+            <div class="panel">
+                <table>
+                    <tr><th>Kata</th><th>Arti</th><th>Contoh</th></tr>
+                    <tr><td>これ</td><td>ini (dekat pembicara)</td><td>これは なんですか。 (Ini apa?)</td></tr>
+                    <tr><td>それ</td><td>itu (dekat lawan bicara)</td><td>それは ぺん です。 (Itu pulpen.)</td></tr>
+                    <tr><td>あれ</td><td>itu (jauh dari keduanya)</td><td>あれは がっこう です。 (Itu sekolah.)</td></tr>
+                    <tr><td>どれ</td><td>yang mana</td><td>あなたの かばんは どれですか。 (Tasmu yang mana?)</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION 5: TIPS -->
+        <section id="tips">
+            <h2>5. Tips Belajar N5</h2>
+            <ul>
+                <li><strong>Hafal kana dulu</strong> — jangan loncat ke kanji sebelum hiragana & katakana lancar. Ini investasi awal yang paling penting.</li>
+                <li><strong>Kosakata 10 kata/hari</strong> — konsisten lebih baik daripada hafal 100 kata sekaligus tapi besoknya lupa.</li>
+                <li><strong>Baca contoh kalimat</strong> — jangan hafal pola grammar tanpa contoh. Bahasa itu konteks.</li>
+                <li><strong>Dengarkan lagu/berita Jepang</strong> — walau belum paham, telinga terbiasa dengan bunyi dan intonasi.</li>
+                <li><strong>Latihan soal N5</strong> — setelah materi dasar masuk, coba soal-soal tahun lalu biar tahu pola ujian.</li>
+                <li><strong>Jangan takut salah</strong> — N5 itu level pemula, yang penting berani praktik.</li>
+            </ul>
+            <p>Total waktu belajar yang disarankan: <strong>150–300 jam</strong> atau sekitar 3–6 bulan kalau belajar 30 menit sehari.</p>
+        </section>
+
+    </div>
+
+    <!-- AUDIO CONTROLS -->
+    <div class="audio-controls">
+        <span>BGM</span>
+        <button id="bgmToggle" onclick="toggleBGM()">▶ Nyalakan</button>
+    </div>
+
+    <footer>
+        <p>Dibuat manual pakai Notepad++ dan kopi. Materi N5 ini buat belajar bareng, bukan buat dijual.</p>
+        <p>&copy; 2026 — 日本語 N5 基礎</p>
+    </footer>
+
+    <script>
+        // ==========================================
+        // BAGIAN AUDIO (Web Audio API)
+        // BGM: melodi pentatonik Jepang sederhana
+        // SFX: klik pendek
+        // ==========================================
+
+        let audioCtx = null;
+        let bgmPlaying = false;
+        let bgmInterval = null;
+        let bgmStep = 0;
+
+        let installPrompt = null;
+
+        window.addEventListener('beforeinstallprompt', event => {
+            event.preventDefault();
+            installPrompt = event;
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const installButton = document.getElementById('installApp');
+            const installHint = document.getElementById('installHint');
+
+            installButton.addEventListener('click', async () => {
+                if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                    installHint.textContent = 'Aplikasi ini sudah terpasang di perangkatmu.';
+                    return;
+                }
+                if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+                    installHint.textContent = 'Aplikasi perlu diunggah ke hosting HTTPS dulu sebelum bisa dipasang di HP.';
+                    return;
+                }
+                if (!installPrompt) {
+                    installHint.textContent = /iPad|iPhone|iPod/.test(navigator.userAgent)
+                        ? 'Di Safari, tekan Bagikan lalu pilih “Tambahkan ke Layar Utama”.'
+                        : 'Buka menu browser (⋮), lalu pilih “Install app” atau “Tambahkan ke layar utama”.';
+                    return;
+                }
+
+                installPrompt.prompt();
+                const choice = await installPrompt.userChoice;
+                installHint.textContent = choice.outcome === 'accepted'
+                    ? 'Aplikasi berhasil dipasang. Cari ikonnya di layar utama!'
+                    : 'Tidak apa-apa—kamu bisa memasangnya kapan saja dari menu browser.';
+                installPrompt = null;
+            });
+
+            window.addEventListener('appinstalled', () => {
+                installHint.textContent = 'Aplikasi berhasil dipasang. Selamat belajar!';
+                installPrompt = null;
+            });
+
+            if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./service-worker.js')
+                        .catch(error => {
+                            console.error('Gagal mengaktifkan dukungan offline:', error);
+                            installHint.textContent = 'Mode offline belum aktif. Pastikan file aplikasi diunggah lengkap.';
+                        });
+                });
+            }
+        });
+
+        // Inisialisasi AudioContext setelah interaksi user
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // SFX: bunyi klik
+        function playClickSFX() {
+            initAudio();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.08);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        // BGM: melodi loop sederhana (skala pentatonik: C, D, E, G, A)
+        // Dibuat pakai oscillator biar ga perlu file mp3 eksternal
+        const melody = [
+            { note: 523.25, dur: 0.3 }, // C5
+            { note: 587.33, dur: 0.3 }, // D5
+            { note: 659.25, dur: 0.3 }, // E5
+            { note: 783.99, dur: 0.3 }, // G5
+            { note: 880.00, dur: 0.3 }, // A5
+            { note: 783.99, dur: 0.3 }, // G5
+            { note: 659.25, dur: 0.3 }, // E5
+            { note: 587.33, dur: 0.3 }, // D5
+            { note: 523.25, dur: 0.6 }, // C5 (lebih panjang)
+            { note: 440.00, dur: 0.3 }, // A4
+            { note: 523.25, dur: 0.3 }, // C5
+            { note: 587.33, dur: 0.6 }  // D5
+        ];
+
+        function playBGMLoop() {
+            if (!bgmPlaying || !audioCtx) return;
+            const now = audioCtx.currentTime;
+            // mainkan satu siklus melodi
+            let offset = 0;
+            melody.forEach((item) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle'; // suara lembut seperti koto
+                osc.frequency.value = item.note;
+                gain.gain.setValueAtTime(0.0001, now + offset);
+                gain.gain.linearRampToValueAtTime(0.06, now + offset + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + item.dur - 0.02);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + offset);
+                osc.stop(now + offset + item.dur);
+                offset += item.dur;
+            });
+            // jadwalkan loop berikutnya setelah selesai
+            const totalDur = melody.reduce((sum, item) => sum + item.dur, 0);
+            bgmInterval = setTimeout(playBGMLoop, totalDur * 1000);
+        }
+
+        function toggleBGM() {
+            initAudio();
+            const btn = document.getElementById('bgmToggle');
+            if (!bgmPlaying) {
+                bgmPlaying = true;
+                btn.textContent = '⏸ Matikan';
+                playBGMLoop();
+                playClickSFX();
+            } else {
+                bgmPlaying = false;
+                btn.textContent = '▶ Nyalakan';
+                if (bgmInterval) {
+                    clearTimeout(bgmInterval);
+                    bgmInterval = null;
+                }
+                playClickSFX();
+            }
+        }
+
+        // ==========================================
+        // ACCORDION + SFX
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', function () {
+            const acc = document.getElementsByClassName('accordion');
+            for (let i = 0; i < acc.length; i++) {
+                acc[i].addEventListener('click', function () {
+                    playClickSFX();
+                    this.classList.toggle('active');
+                    const panel = this.nextElementSibling;
+                    if (panel.style.display === 'block') {
+                        panel.style.display = 'none';
+                    } else {
+                        panel.style.display = 'block';
+                    }
+                });
+            }
+
+            // SFX untuk navigasi
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    playClickSFX();
+                });
+            });
+
+            const storageKey = 'belajarJepangN5Progress';
+            const studyGreeting = document.getElementById('studyGreeting');
+            let storageAvailable = true;
+            let studyState = {
+                totalXp: 0,
+                streakDays: 0,
+                lastStudyDate: '',
+                dailyDate: '',
+                dailyCount: 0,
+                knownWords: [],
+                darkMode: false
+            };
+
+            try {
+                const savedState = localStorage.getItem(storageKey);
+                if (savedState) {
+                    const parsedState = JSON.parse(savedState);
+                    if (parsedState && typeof parsedState === 'object') {
+                        studyState = {
+                            ...studyState,
+                            ...parsedState,
+                            totalXp: Number.isFinite(parsedState.totalXp) ? parsedState.totalXp : 0,
+                            streakDays: Number.isFinite(parsedState.streakDays) ? parsedState.streakDays : 0,
+                            dailyCount: Number.isFinite(parsedState.dailyCount) ? parsedState.dailyCount : 0,
+                            knownWords: Array.isArray(parsedState.knownWords) ? parsedState.knownWords : []
+                        };
+                    }
+                }
+            } catch (error) {
+                storageAvailable = false;
+                studyGreeting.textContent = 'Penyimpanan progres tidak tersedia di browser ini; progres sesi tetap berjalan.';
+            }
+
+            function saveStudyState() {
+                if (!storageAvailable) return;
+                try {
+                    localStorage.setItem(storageKey, JSON.stringify(studyState));
+                } catch (error) {
+                    storageAvailable = false;
+                    studyGreeting.textContent = 'Penyimpanan progres gagal; progres sesi tetap berjalan selama halaman terbuka.';
+                }
+            }
+
+            function getDateKey(date) {
+                return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            }
+
+            function updateDashboard() {
+                const today = getDateKey(new Date());
+                if (studyState.dailyDate !== today) studyState.dailyCount = 0;
+                document.getElementById('totalXp').textContent = String(studyState.totalXp);
+                document.getElementById('dayStreak').textContent = String(studyState.streakDays);
+                document.getElementById('knownWords').textContent = String(studyState.knownWords.length);
+                document.getElementById('dailyGoalText').textContent = `${Math.min(studyState.dailyCount, 10)} / 10 selesai`;
+                document.getElementById('dailyGoalProgress').style.width = `${Math.min(studyState.dailyCount, 10) * 10}%`;
+                document.querySelector('.dashboard-progress').setAttribute('aria-valuenow', String(Math.min(studyState.dailyCount, 10)));
+                if (storageAvailable) {
+                    studyGreeting.textContent = studyState.dailyCount >= 10
+                        ? 'Target hari ini tercapai! やった！ Kamu hebat!'
+                        : 'Sedikit latihan hari ini bikin makin lancar.';
+                }
+                document.body.classList.toggle('dark-mode', Boolean(studyState.darkMode));
+                const themeToggle = document.getElementById('themeToggle');
+                themeToggle.textContent = studyState.darkMode ? '☀️ Mode terang' : '🌙 Mode gelap';
+                themeToggle.setAttribute('aria-pressed', String(Boolean(studyState.darkMode)));
+            }
+
+            function recordStudyActivity(xp = 0) {
+                const today = getDateKey(new Date());
+                if (studyState.lastStudyDate !== today) {
+                    const previousDay = new Date();
+                    previousDay.setDate(previousDay.getDate() - 1);
+                    studyState.streakDays = studyState.lastStudyDate === getDateKey(previousDay)
+                        ? studyState.streakDays + 1
+                        : 1;
+                    studyState.lastStudyDate = today;
+                }
+                if (studyState.dailyDate !== today) {
+                    studyState.dailyDate = today;
+                    studyState.dailyCount = 0;
+                }
+                studyState.dailyCount += 1;
+                studyState.totalXp += xp;
+                saveStudyState();
+                updateDashboard();
+            }
+
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                studyState.darkMode = !studyState.darkMode;
+                saveStudyState();
+                updateDashboard();
+            });
+            document.getElementById('resetProgress').addEventListener('click', () => {
+                if (!window.confirm('Yakin ingin menghapus XP, streak, kata yang dihafal, dan target harian?')) return;
+                studyState = {
+                    totalXp: 0,
+                    streakDays: 0,
+                    lastStudyDate: '',
+                    dailyDate: '',
+                    dailyCount: 0,
+                    knownWords: [],
+                    darkMode: studyState.darkMode
+                };
+                saveStudyState();
+                updateDashboard();
+                if (typeof startCards === 'function') startCards();
+            });
+            updateDashboard();
+
+            const vocabRows = Array.from(document.querySelectorAll('#kosakata table tr'))
+                .map(row => {
+                    const cells = Array.from(row.querySelectorAll('td'));
+                    if (cells.length < 3) return null;
+                    const kanji = cells[0].textContent.trim();
+                    const kana = cells[1].textContent.trim();
+                    const meaning = cells[2].textContent.trim();
+                    if (!kana || !meaning) return null;
+                    const category = row.closest('.panel')?.previousElementSibling?.textContent.trim() || 'Kosakata';
+                    return { kanji, kana, meaning, category, id: `${kana}|${meaning}` };
+                })
+                .filter(Boolean)
+                .filter((word, index, words) => words.findIndex(item => item.id === word.id) === index);
+
+            const vocabSearch = document.getElementById('vocabSearch');
+            const vocabSearchStatus = document.getElementById('vocabSearchStatus');
+            let savedVocabPanelStates = null;
+            vocabSearch.addEventListener('input', () => {
+                const query = vocabSearch.value.trim().toLocaleLowerCase('id');
+                let visibleRows = 0;
+                const vocabPanels = Array.from(document.querySelectorAll('#kosakata .panel'));
+                if (query && savedVocabPanelStates === null) {
+                    savedVocabPanelStates = vocabPanels.map(panel => panel.style.display === 'block');
+                }
+                document.querySelectorAll('#kosakata table tr').forEach(row => {
+                    const cells = Array.from(row.querySelectorAll('td'));
+                    if (cells.length < 3) return;
+                    const matches = row.textContent.toLocaleLowerCase('id').includes(query);
+                    row.hidden = !matches;
+                    if (matches) visibleRows += 1;
+                });
+                vocabPanels.forEach((panel, index) => {
+                    const button = panel.previousElementSibling;
+                    if (query) {
+                        const hasVisibleMatch = Array.from(panel.querySelectorAll('tr'))
+                            .some(row => row.querySelector('td') && !row.hidden);
+                        panel.style.display = hasVisibleMatch ? 'block' : 'none';
+                        button.classList.toggle('active', hasVisibleMatch);
+                    } else if (savedVocabPanelStates) {
+                        panel.style.display = savedVocabPanelStates[index] ? 'block' : 'none';
+                        button.classList.toggle('active', savedVocabPanelStates[index]);
+                    }
+                });
+                if (!query) savedVocabPanelStates = null;
+                vocabSearchStatus.textContent = query
+                    ? `${visibleRows} kosakata ditemukan.`
+                    : '';
+            });
+
+            const flashcard = document.getElementById('flashcard');
+            const flashcardMain = document.getElementById('flashcardMain');
+            const flashcardSub = document.getElementById('flashcardSub');
+            const flashcardHint = document.getElementById('flashcardHint');
+            const flashcardCounter = document.getElementById('flashcardCounter');
+            const flashcardFeedback = document.getElementById('flashcardFeedback');
+            const reviewWord = document.getElementById('reviewWord');
+            const revealWord = document.getElementById('revealWord');
+            const knowWord = document.getElementById('knowWord');
+            const restartCards = document.getElementById('restartCards');
+            let cardQueue = [];
+            let cardIndex = 0;
+            let cardRevealed = false;
+            let currentCard = null;
+
+            function startCards() {
+                cardQueue = shuffle(vocabRows.filter(word => !studyState.knownWords.includes(word.id)));
+                cardIndex = 0;
+                flashcardFeedback.textContent = '';
+                restartCards.hidden = true;
+                showCard();
+            }
+
+            function showCard() {
+                if (cardIndex >= cardQueue.length) {
+                    currentCard = null;
+                    flashcardMain.textContent = '🎉';
+                    flashcardSub.textContent = 'Semua kartu di sesi ini selesai!';
+                    flashcardHint.textContent = 'Kamu bisa mulai sesi baru kapan saja.';
+                    flashcardCounter.textContent = `${studyState.knownWords.length} kata dikuasai`;
+                    reviewWord.hidden = true;
+                    revealWord.hidden = true;
+                    knowWord.hidden = true;
+                    restartCards.hidden = false;
+                    return;
+                }
+                currentCard = cardQueue[cardIndex];
+                cardRevealed = false;
+                flashcardMain.textContent = currentCard.kanji;
+                flashcardSub.textContent = currentCard.kana;
+                flashcardHint.textContent = 'Klik kartu atau tombol untuk melihat arti';
+                flashcardCounter.textContent = `Kartu ${cardIndex + 1} dari ${cardQueue.length} · ${currentCard.category}`;
+                flashcardFeedback.textContent = '';
+                reviewWord.hidden = false;
+                revealWord.hidden = false;
+                knowWord.hidden = false;
+                restartCards.hidden = true;
+            }
+
+            function revealCard() {
+                if (!currentCard || cardRevealed) return;
+                cardRevealed = true;
+                flashcardMain.textContent = currentCard.meaning;
+                flashcardSub.textContent = `${currentCard.kanji} · ${currentCard.kana}`;
+                flashcardHint.textContent = 'Sudah ingat? Pilih aksi di bawah.';
+            }
+
+            function markCardKnown() {
+                if (!currentCard) return;
+                if (!studyState.knownWords.includes(currentCard.id)) {
+                    studyState.knownWords.push(currentCard.id);
+                    recordStudyActivity(5);
+                }
+                cardIndex += 1;
+                showCard();
+            }
+
+            function markCardForReview() {
+                if (!currentCard) return;
+                cardQueue.push(currentCard);
+                cardIndex += 1;
+                recordStudyActivity(0);
+                flashcardFeedback.textContent = 'Sip, kartu ini akan muncul lagi setelah beberapa kata.';
+                showCard();
+            }
+
+            flashcard.addEventListener('click', revealCard);
+            flashcard.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    revealCard();
+                }
+            });
+            revealWord.addEventListener('click', revealCard);
+            knowWord.addEventListener('click', markCardKnown);
+            reviewWord.addEventListener('click', markCardForReview);
+            restartCards.addEventListener('click', startCards);
+            startCards();
+
+            const kanaMode = document.getElementById('kanaMode');
+            const quizOptions = document.getElementById('quizOptions');
+            const quizKana = document.getElementById('quizKana');
+            const quizCounter = document.getElementById('quizCounter');
+            const quizFeedback = document.getElementById('quizFeedback');
+            const quizScore = document.getElementById('quizScore');
+            const quizStreak = document.getElementById('quizStreak');
+            const quizProgress = document.getElementById('quizProgress');
+            const quizProgressBar = document.querySelector('.quiz-progress');
+            const quizNext = document.getElementById('quizNext');
+            const quizRestart = document.getElementById('quizRestart');
+            const speakKana = document.getElementById('speakKana');
+            const roundLength = 10;
+            let questionDeck = [];
+            let questionIndex = 0;
+            let currentQuestion = null;
+            let score = 0;
+            let streak = 0;
+            let answered = false;
+
+            function shuffle(items) {
+                const shuffled = [...items];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const randomIndex = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            function getKanaSet() {
+                const grids = document.querySelectorAll('#kana .kana-grid');
+                const grid = grids[Number(kanaMode.value)];
+                return Array.from(grid.querySelectorAll('.kana-item')).map(item => ({
+                    kana: item.firstChild.textContent.trim(),
+                    romaji: item.querySelector('.romaji').textContent.trim()
+                }));
+            }
+
+            function updateProgress(answeredCount) {
+                quizProgress.style.width = `${answeredCount / roundLength * 100}%`;
+                quizProgressBar.setAttribute('aria-valuenow', String(answeredCount));
+            }
+
+            function updateStats() {
+                quizScore.textContent = String(score);
+                quizStreak.textContent = String(streak);
+            }
+
+            function startRound() {
+                questionDeck = shuffle(getKanaSet());
+                questionIndex = 0;
+                score = 0;
+                streak = 0;
+                answered = false;
+                quizNext.hidden = true;
+                quizRestart.hidden = true;
+                quizFeedback.textContent = '';
+                quizFeedback.className = 'quiz-feedback';
+                updateStats();
+                updateProgress(0);
+                showQuestion();
+            }
+
+            function showQuestion() {
+                currentQuestion = questionDeck[questionIndex];
+                answered = false;
+                quizKana.textContent = currentQuestion.kana;
+                quizCounter.textContent = `Soal ${questionIndex + 1} dari ${roundLength}`;
+                quizFeedback.textContent = '';
+                quizFeedback.className = 'quiz-feedback';
+                quizNext.hidden = true;
+                const distractors = getKanaSet().filter(item => item.romaji !== currentQuestion.romaji);
+                const choices = shuffle([
+                    currentQuestion,
+                    ...shuffle(distractors).slice(0, 3)
+                ]);
+                quizOptions.replaceChildren();
+
+                choices.forEach((choice, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'quiz-button';
+                    button.type = 'button';
+                    button.textContent = `${index + 1}. ${choice.romaji}`;
+                    button.dataset.correct = String(choice.romaji === currentQuestion.romaji);
+                    button.addEventListener('click', () => answerQuestion(button));
+                    quizOptions.appendChild(button);
+                });
+            }
+
+            function answerQuestion(selectedButton) {
+                if (answered) return;
+                answered = true;
+                const isCorrect = selectedButton.dataset.correct === 'true';
+                quizOptions.querySelectorAll('button').forEach(button => {
+                    button.disabled = true;
+                    if (button.dataset.correct === 'true') button.classList.add('is-correct');
+                });
+
+                if (isCorrect) {
+                    score += 10;
+                    streak += 1;
+                    recordStudyActivity(10);
+                    quizFeedback.textContent = `✨ Benar! ${currentQuestion.kana} dibaca ${currentQuestion.romaji}. +10 XP`;
+                    quizFeedback.classList.add('is-correct');
+                } else {
+                    streak = 0;
+                    recordStudyActivity(0);
+                    selectedButton.classList.add('is-wrong');
+                    quizFeedback.textContent = `Belum tepat! ${currentQuestion.kana} dibaca ${currentQuestion.romaji}.`;
+                    quizFeedback.classList.add('is-wrong');
+                }
+
+                updateStats();
+                updateProgress(questionIndex + 1);
+                quizNext.textContent = questionIndex === roundLength - 1 ? 'Lihat hasil 🎉' : 'Lanjut →';
+                quizNext.hidden = false;
+            }
+
+            function finishRound() {
+                quizCounter.textContent = 'Ronde selesai!';
+                quizFeedback.className = 'quiz-feedback';
+                if (score === roundLength * 10) {
+                    quizFeedback.textContent = `🏆 Sempurna! Kamu dapat ${score} XP.`;
+                } else if (score >= 70) {
+                    quizFeedback.textContent = `Hebat! Kamu dapat ${score} XP. Sedikit lagi menuju sempurna!`;
+                } else {
+                    quizFeedback.textContent = `Kamu dapat ${score} XP. Coba lagi untuk mengalahkan skor ini!`;
+                }
+                quizNext.hidden = true;
+                quizRestart.hidden = false;
+            }
+
+            quizNext.addEventListener('click', () => {
+                if (questionIndex === roundLength - 1) {
+                    finishRound();
+                    return;
+                }
+                questionIndex += 1;
+                showQuestion();
+            });
+            quizRestart.addEventListener('click', startRound);
+            kanaMode.addEventListener('change', startRound);
+            document.addEventListener('keydown', event => {
+                if (/^[1-4]$/.test(event.key) && !answered && document.activeElement?.tagName !== 'INPUT') {
+                    const choice = quizOptions.querySelectorAll('button')[Number(event.key) - 1];
+                    if (choice) choice.click();
+                } else if (event.key === 'Enter' && !quizNext.hidden && document.activeElement?.tagName !== 'BUTTON') {
+                    quizNext.click();
+                }
+            });
+            speakKana.addEventListener('click', () => {
+                if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+                const utterance = new SpeechSynthesisUtterance(currentQuestion.kana);
+                utterance.lang = 'ja-JP';
+                window.speechSynthesis.cancel();
+                window.speechSynthesis.speak(utterance);
+            });
+            if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
+                speakKana.disabled = true;
+                speakKana.textContent = 'Audio tidak tersedia';
+            }
+            startRound();
+        });
+    </script>
+
+</body>
+</html>
